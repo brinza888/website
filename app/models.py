@@ -11,20 +11,17 @@ class User (db.Model, UserMixin):
         primary_key=True
     )
 
-    email = db.Column(
-        db.String(120),
-        nullable=False,
-        unique=True
+    username = db.Column(
+        db.String(50)
     )
 
     profile_name = db.Column(
         db.String(200),
-        nullable=False,
+        nullable=False
     )
 
     password = db.Column(
         db.String(200),
-        primary_key=False,
         nullable=False
     )
 
@@ -36,9 +33,9 @@ class User (db.Model, UserMixin):
 
     @staticmethod
     def hash_password(password):
-        return hashlib.sha256(password).hexdigest()
+        return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
