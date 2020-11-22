@@ -354,6 +354,19 @@ ul.rightNav li a:hover {
 	margin-right: 15px;
 	border: 10px solid #cfcfcf;
 }
+
+.alert {
+  padding: 20px;
+  background-color: #a12424;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.avatar {
+	width: 200px;
+	height: 200px;
+}
+
 /*Подвал*/
 .footer {
 	position: fixed; /* Фиксированное положение */

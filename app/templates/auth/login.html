@@ -7,7 +7,19 @@
     <h1> Вход </h1>
     <br>
 
-    <form>
+    {% if error %}
+        <div class="alert">
+            {% if error == 'empty_fields' %}
+                <p> Обязательные поля не заполнены </p>
+            {% elif error == 'user_not_found' %}
+                <p> Пользователь не найден </p>
+            {% elif error == 'incorrect_data' %}
+                <p> Неверная пара логин/пароль </p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <form action="{{url_for('auth.login')}}" method="POST">
         <div class="row">
             <label>Имя пользователя</label>
             <input type="text" name="username" required>
