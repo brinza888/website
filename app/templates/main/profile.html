@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} Профиль {% endblock %}
+
+
+{% block main %}
+    
+    <div class="row">
+        <div class="col"><img src="{{url_for('static', filename='images/noavatar.png')}}" class="avatar"></div>
+        <div class="col"><h1> {{user.profile_name}} </h1></div>
+    </div>
+
+    <div class="row">
+        <p> Default user text </p>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,4 @@
+/myenv/
+run.bat
+__pycache__
+*.db

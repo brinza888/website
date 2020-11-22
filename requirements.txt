@@ -1,0 +1,8 @@
+flask
+flask-login
+flask-sqlalchemy
+flask-migrate
+flask-script
+mysql-connector-python
+gunicorn
+python-dotenv
