@@ -11,7 +11,7 @@ html,body {
 body {
 	background: #e4e4e4 url("images/bg.jpg") repeat;
 	font-family: Arial;
-	font-size: 14px;
+	font-size: 15px;
 	color: #4b4b4b;
 	line-height: 18px;
 	text-shadow: 0 1px 0 white;
@@ -81,13 +81,13 @@ input,button,textarea {
 	display: inline-block;
 }
 
-input[type=text],textarea,select {
+input[type=text],input[type=password],textarea,select {
 	padding: 5px;
 	height: auto;
 	border: 1px solid #bcbcbc;
 }
 
-input[type=text],textarea,button {
+input[type=text],input[type=password],textarea,button {
 	box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
 	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
 	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
@@ -103,7 +103,7 @@ input[type=checkbox],input[type=radio] {
 	float: left;
 }
 
-input[type=text] {
+input[type=text],input[type=password] {
 	width: 200px;
 }
 
