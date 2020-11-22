@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} Вход {% endblock %}
+
+
+{% block main %}
+    <h1> Регистрация </h1>
+    <br>
+
+    <form>
+        <div class="row">
+            <label>Имя профиля</label>
+            <input type="text" name="accountname" required>
+        </div>
+
+        <div class="row">
+            <label>Имя пользователя</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="row">
+            <label>Пароль</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <div class="row">
+            <label>Повтор пароля</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <div class="row">   
+            <label>
+                <input type="checkbox" name="terms_accept" required> Я принимаю <a href="{{url_for('main.eula')}}" target="_blank">Пользовательское соглашение</a>
+            </label>
+        </div>
+
+        <div class="row">
+            <button type="submit">Войти</button>
+        </div>
+    </form>
+{% endblock %}
