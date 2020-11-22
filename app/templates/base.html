@@ -11,7 +11,7 @@
 		<div class="wrapper">
 
 			<div class="header">
-				<div class="logo"><a href="">Brinza<span class="black">Bezrukoff</span><span class="gray">.xyz</span></a></div>
+				<div class="logo"><a href="{{url_for('main.index')}}">Brinza<span class="black">Bezrukoff</span><span class="gray">.xyz</span></a></div>
 				<ul class="nav">
                     {% block nav %}
                         {% for url, title, active in navbar %}
