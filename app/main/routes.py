@@ -15,6 +15,11 @@ def contacts():
     return render_template("main/contacts.html")
 
 
+@bp.route("/eula")
+def eula():
+    return render_template("main/eula.html")
+
+
 @bp.route("/projects")
 def projects():
     return render_template("main/projects.html")
