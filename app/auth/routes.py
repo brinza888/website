@@ -40,7 +40,7 @@ def register():
             return render_template("auth/register.html", error="passwords_not_match")
         u = User.query.filter(User.username == username).first()
         if u:
-            render_template("auth/register.html", error="username_exists")
+            return render_template("auth/register.html", error="username_exists")
         u = User(username=username, profile_name=profile_name)
         u.set_password(password)
         db.session.add(u)
