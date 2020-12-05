@@ -37,11 +37,11 @@ class User (db.Model, UserMixin):
         return role in self.roles
 
     def set_role(self, role):
-
+        pass
 
 
 permissions_roles = db.Table("permissions_roles",
-    db.Colum("role_id", db.Integer(), db.ForeignKey("role.id")),
+    db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
     db.Column("permission_id", db.Integer(), db.ForeignKey("permission.id"))
 )
 
