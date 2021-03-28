@@ -26,7 +26,7 @@ def create_app(config=Config):
 
     ## Modules ##
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=app.config["BATCH_MODE"])
     login_manager.init_app(app)
     admin.init_app(app)
 
