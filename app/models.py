@@ -6,9 +6,9 @@ from app import db, login_manager
 
 
 roles_users = db.Table("roles_users",
-    db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
-    db.Column("role_id", db.Integer(), db.ForeignKey("role.id"))
-)
+                       db.Column("user_id", db.Integer(), db.ForeignKey("user.id")),
+                       db.Column("role_id", db.Integer(), db.ForeignKey("role.id"))
+                       )
 
 
 class User (db.Model, UserMixin):
@@ -17,8 +17,8 @@ class User (db.Model, UserMixin):
     profile_name = db.Column(db.String(255))
     password = db.Column(db.String(255))
 
-    roles = db.relationship("Role", secondary=roles_users,
-        lazy="dynamic", backref="users")
+    roles = db.relationship("Role", secondary=roles_users, lazy="dynamic",
+                            backref=db.backref("users", lazy="dynamic"))
 
     def set_password(self, password):
         self.password = User.hash_password(password)
@@ -34,32 +34,33 @@ class User (db.Model, UserMixin):
         pass
 
     def has_role(self, role_name):
-        return role in self.roles
+        return role_name in [r.name for r in self.roles.all()]
 
-    def set_role(self, role):
+    def set_role(self, role_name):
         pass
+
+    @staticmethod
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
 
 
 permissions_roles = db.Table("permissions_roles",
-    db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
-    db.Column("permission_id", db.Integer(), db.ForeignKey("permission.id"))
-)
+                             db.Column("role_id", db.Integer, db.ForeignKey("role.id")),
+                             db.Column("permission_id", db.Integer, db.ForeignKey("permission.id"))
+                             )
 
 
 class Role (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
     display_name = db.Column(db.String(255))
-    permissions = db.relationship("Permission", secondary=permissions_roles,
-        lazy="dynamic", backref="roles")
+
+    permissions = db.relationship("Permission", secondary=permissions_roles, lazy="dynamic",
+                                  backref=db.backref("roles", lazy="dynamic"))
 
 
 class Permission (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     description = db.Column(db.String(255))
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
