@@ -19,6 +19,9 @@ class Role(db.Model):
     permissions = db.relationship("Permission", secondary=permissions_roles, lazy="dynamic",
                                   backref=db.backref("roles", lazy="dynamic"))
 
+    def __repr__(self):
+        return f"Role({self.name})"
+
     def has_permission(self, permission_name):
         return permission_name in [p.name for p in self.permissions.all()]
 
@@ -38,6 +41,9 @@ class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     description = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"Permission({self.name})"
 
     @staticmethod
     def register(name, description, add_to_default=False):
@@ -73,6 +79,9 @@ class User (db.Model, UserMixin):
     def __init__(self, *args, **kwargs):
         super(db.Model, self).__init__(*args, **kwargs)
         super(UserMixin, self).__init__()
+
+    def __repr__(self):
+        return f"User({self.username})"
 
     def has_permission(self, permission_name):
         for r in self.roles.all():
