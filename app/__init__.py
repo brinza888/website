@@ -31,8 +31,10 @@ def create_app(config=Config):
     admin.init_app(app)
 
     ## Admin views ##
-    from app.models import User
+    from app.models import User, Role, Permission
     admin.add_view(ModelView(User, db.session))
+    admin.add_view(ModelView(Role, db.session))
+    admin.add_view(ModelView(Permission, db.session))
 
     ## Blueprints ##
     from app.errors import bp as errors_bp
