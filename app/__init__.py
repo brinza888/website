@@ -20,23 +20,23 @@ admin = Admin(name="BrinzaBezrukoff", template_mode="bootstrap3")
 
 def create_app(config=Config):
     app = Flask(__name__,
-            static_url_path="/static",
-            static_folder="./static")
+                static_url_path="/static",
+                static_folder="./static")
     app.config.from_object(config)
 
-    ## Modules ##
+    # Modules
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=app.config["BATCH_MODE"])
     login_manager.init_app(app)
     admin.init_app(app)
 
-    ## Admin views ##
+    # Admin views
     from app.models import User, Role, Permission
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Role, db.session))
     admin.add_view(ModelView(Permission, db.session))
 
-    ## Blueprints ##
+    # Blueprints
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
@@ -46,7 +46,7 @@ def create_app(config=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    ## Context processors ##
+    # Context processors
     from app.tools import utility_processor, navbar_processor
     app.context_processor(utility_processor)
     app.context_processor(navbar_processor)
