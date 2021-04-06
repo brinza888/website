@@ -11,3 +11,8 @@ def error404(e):
 @bp.app_errorhandler(401)
 def error401(e):
     return render_template("errors/401.html"), 401
+
+
+@bp.app_errorhandler(403)
+def error403(e):
+    return render_template("errors/403.html"), 403
