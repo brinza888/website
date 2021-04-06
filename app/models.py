@@ -22,6 +22,9 @@ class Role(db.Model):
     def __repr__(self):
         return f"Role({self.name})"
 
+    def __str__(self):
+        return f"{self.name}"
+
     def has_permission(self, permission_name):
         return permission_name in [p.name for p in self.permissions.all()]
 
@@ -45,20 +48,8 @@ class Permission(db.Model):
     def __repr__(self):
         return f"Permission({self.name})"
 
-    @staticmethod
-    def register(name, description, add_to_default=False):
-        p = Permission.query.filter(Permission.name == name).first()
-        if not p:
-            p = Permission(name=name, description=description)
-            db.session.add(p)
-        if add_to_default:
-            User.default_role.permissions.add(p)
-
-    @staticmethod
-    def register_many(perms, add_to_default=False):
-        for name, desc in perms:
-            Permission.register(name, desc, add_to_default=add_to_default)
-        db.session.commit()
+    def __str__(self):
+        return f"{self.name}"
 
 
 roles_users = db.Table("roles_users",
@@ -82,6 +73,9 @@ class User (db.Model, UserMixin):
 
     def __repr__(self):
         return f"User({self.username})"
+
+    def __str__(self):
+        return f"{self.username}"
 
     def has_permission(self, permission_name):
         for r in self.roles.all():
