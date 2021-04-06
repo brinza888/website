@@ -2,19 +2,18 @@ from flask import Flask
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
 from flask_login import LoginManager
-
 from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
-
 
 from config import Config
+
+from app.permissions import PermsManager
 
 
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+pm = PermsManager()
 admin = Admin(name="BrinzaBezrukoff", template_mode="bootstrap3")
 
 
@@ -24,17 +23,19 @@ def create_app(config=Config):
                 static_folder="./static")
     app.config.from_object(config)
 
+    from app.admin_views import ProtectedAdminIndex, ProtectedAdminModel
+
     # Modules
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=app.config["BATCH_MODE"])
     login_manager.init_app(app)
-    admin.init_app(app)
+    admin.init_app(app, index_view=ProtectedAdminIndex())
 
     # Admin views
     from app.models import User, Role, Permission
-    admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Role, db.session))
-    admin.add_view(ModelView(Permission, db.session))
+    admin.add_view(ProtectedAdminModel(User, db.session))
+    admin.add_view(ProtectedAdminModel(Role, db.session))
+    admin.add_view(ProtectedAdminModel(Permission, db.session))
 
     # Blueprints
     from app.errors import bp as errors_bp
@@ -50,6 +51,10 @@ def create_app(config=Config):
     from app.tools import utility_processor, navbar_processor
     app.context_processor(utility_processor)
     app.context_processor(navbar_processor)
+
+    # Permissions
+    pm.init_app(app, db, Permission)
+    pm.create_all()
 
     return app
 
