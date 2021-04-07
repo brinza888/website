@@ -1,10 +1,16 @@
 from flask import *
-from flask_login import login_required
 
 from app.bots import bp
+from app.permissions import permission_required
+from app import pm
+
+
+pm.register({
+    "bots.index": ("Access to bots control index page",),
+})
 
 
 @bp.route("/")
-@login_required
+@permission_required("bots.index")
 def index():
     return render_template("bots/index.html")

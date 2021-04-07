@@ -40,6 +40,9 @@
                                     {% if current_user.is_authenticated %}
                                         <li><a href="{{url_for('main.profile')}}">Мой профиль</a></li>
                                         <li><a href="{{url_for('auth.logout')}}">Выйти из аккаунта</a></li>
+                                        {% if current_user.has_permission('bots.index') %}
+                                            <li><a href="{{url_for('bots.index')}}">Управление ботами</a></li>
+                                        {% endif %}
                                     {% else %}
                                         <li><a href="{{url_for('auth.login')}}">Вход</a></li>
                                         <li><a href="{{url_for('auth.register')}}">Регистрация</a></li>
