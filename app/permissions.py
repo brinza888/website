@@ -1,3 +1,9 @@
+from functools import wraps
+
+from flask import redirect, url_for, abort
+from flask_login import current_user
+
+
 class PermsManager:
     def __init__(self, app=None, db=None, model=None):
         self.app = app
@@ -24,3 +30,16 @@ class PermsManager:
                     p = self.Model(name=k, description=v[0])
                     self.db.session.add(p)
             self.db.session.commit()
+
+
+def permission_required(p_name):
+    def decorator(func):
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            if not current_user.is_authenticated:
+                return redirect(url_for("auth.login"))
+            if not current_user.has_permission(p_name):
+                abort(403)
+            return func(*args, **kwargs)
+        return wrapped
+    return decorator
