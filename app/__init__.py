@@ -54,7 +54,6 @@ def create_app(config=Config):
 
     # Permissions
     pm.init_app(app, db, Permission)
-    pm.create_all()
 
     return app
 
