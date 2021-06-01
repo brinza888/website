@@ -52,8 +52,15 @@ def create_app(config=Config):
     app.context_processor(utility_processor)
     app.context_processor(navbar_processor)
 
+    # Commands
+    from app.commands import create_perms
+    app.cli.add_command(create_perms)
+
     # Permissions
     pm.init_app(app, db, Permission)
+
+    if app.config["AUTO_PERMISSIONS"]:
+        pm.create_all()
 
     return app
 
