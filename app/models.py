@@ -67,10 +67,6 @@ class User (db.Model, UserMixin):
     roles = db.relationship("Role", secondary=roles_users, lazy="dynamic",
                             backref=db.backref("users", lazy="dynamic"))
 
-    def __init__(self, *args, **kwargs):
-        super(db.Model, self).__init__(*args, **kwargs)
-        super(UserMixin, self).__init__()
-
     def __repr__(self):
         return f"User({self.username})"
 
