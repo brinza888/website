@@ -47,6 +47,9 @@ def create_app(config=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    from app.billing import bp as billing_bp
+    app.register_blueprint(billing_bp, url_prefix="/billing")
+
     # Context processors
     from app.tools import utility_processor, navbar_processor
     app.context_processor(utility_processor)
@@ -66,3 +69,4 @@ def create_app(config=Config):
 
 
 from app import models
+from app.billing import models

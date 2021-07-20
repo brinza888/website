@@ -14,3 +14,5 @@ class Config:
     AUTO_PERMISSIONS = bool(int(os.environ.get("AUTO_PERMISSIONS", True)))
 
     SECRET_KEY = os.environ.get("SECRET_KEY", "too-much-secret-4u")
+
+    QIWI_P2P_PRIV_KEY = os.environ.get("QIWI_P2P_PRIV_KEY", "")

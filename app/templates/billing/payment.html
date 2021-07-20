@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} Биллинг {% endblock %}
+
+{% block main %}
+
+    <h1> Пополнение баланса </h1>
+
+    <form action="{{ url_for('billing.payment') }}" method="POST">
+        <div class="row">
+            <label>Сумма пополнения</label>
+            <input type="text" name="amount" required>
+        </div>
+
+        <div class="row">
+            <button type="submit">Выставить счет</button>
+        </div>
+    </form>
+
+{% endblock %}

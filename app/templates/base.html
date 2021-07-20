@@ -39,6 +39,7 @@
                                 {% block rightNav %} 
                                     {% if current_user.is_authenticated %}
                                         <li><a href="{{url_for('main.profile')}}">Мой профиль</a></li>
+                                        <li><a href="{{url_for('billing.account')}}">Биллинг</a></li>
                                         <li><a href="{{url_for('auth.logout')}}">Выйти из аккаунта</a></li>
                                     {% else %}
                                         <li><a href="{{url_for('auth.login')}}">Вход</a></li>

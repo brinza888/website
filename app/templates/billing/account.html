@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} Биллинг {% endblock %}
+
+{% block main %}
+
+    <h1> Биллинговый аккаунт </h1>
+    <br>
+
+    {% if not current_user.billing_account %}
+
+        <p> У вас не открыт биллинговый аккаунт для совершения расчетов </p>
+
+        <form action="{{ url_for('billing.open_account') }}" method="POST">
+            <div class="row">
+                <label>Принимаю пользовательское соглашение об использовании биллинга</label>
+                <input type="checkbox" name="billing_terms" required>
+            </div>
+            <button type="submit"> Открыть биллинговый аккаунт </button>
+        </form>
+
+    {% else %}
+
+        <h1> Баланс: {{ current_user.billing_account.amount }} RUB </h1>
+        <a href="{{url_for('billing.payment')}}" target="_blank"><button type="button">Пополнить баланс</button></a>
+        <br>
+        <br>
+
+        <h1> Список счетов на оплату: </h1>
+        <table class="bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Дата</th>
+                <th>Сумма</th>
+                <th>Статус</th>
+                <th>Оплата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in account_bills %}
+                {% if bill.check() == "WAITING" %}
+                <tr>
+                    <td>{{ bill.id[22:] }}</td>
+                    <td>{{ bill.creation.strftime('%d-%m-%Y %H:%M') }}</td>
+                    <td>{{ bill.amount }}</td>
+                    <td>{{ bill.status }}</td>
+                    {% if bill.status == "WAITING" %}
+                        <td><a href="{{ bill.url }}" target="_blank"><button>Оплатить</button></a></td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+        </table>
+
+    {% endif %}
+
+{% endblock %}
