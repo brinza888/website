@@ -1,4 +1,4 @@
-/myenv/
+venv
 run.bat
 __pycache__
 *.db

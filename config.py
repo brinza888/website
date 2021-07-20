@@ -8,7 +8,7 @@ load_dotenv(os.path.join(basedir, '.env'))
 class Config:
     DEBUG = bool(int(os.environ.get("DEBUG", False)))
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///" + os.path.join(basedir, "db", "app.db"))
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///" + os.path.join(basedir, "app.db"))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BATCH_MODE = bool(int(os.environ.get("BATCH_MODE", False)))
     AUTO_PERMISSIONS = bool(int(os.environ.get("AUTO_PERMISSIONS", True)))
