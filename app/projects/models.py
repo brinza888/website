@@ -21,7 +21,7 @@ class Project(db.Model):
     name = db.Column(db.String(150))
     description = db.Column(db.Text)
 
-    releases = db.relationship(Release, lazy='dynamic', backref=db.backref('roles', lazy='dynamic'))
+    releases = db.relationship(Release, lazy='dynamic', backref='project')
 
     def __init__(self, name, description):
         self.name = name

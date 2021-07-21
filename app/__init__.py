@@ -47,6 +47,9 @@ def create_app(config=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    from app.projects import bp as projects_bp
+    app.register_blueprint(projects_bp, url_prefix="/projects")
+
     # Context processors
     from app.tools import utility_processor, navbar_processor
     app.context_processor(utility_processor)
