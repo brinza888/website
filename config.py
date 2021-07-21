@@ -11,6 +11,6 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///" + os.path.join(basedir, "app.db"))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BATCH_MODE = bool(int(os.environ.get("BATCH_MODE", False)))
-    AUTO_PERMISSIONS = bool(int(os.environ.get("AUTO_PERMISSIONS", True)))
+    AUTO_PERMISSIONS = bool(int(os.environ.get("AUTO_PERMISSIONS", False)))
 
     SECRET_KEY = os.environ.get("SECRET_KEY", "too-much-secret-4u")
