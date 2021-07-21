@@ -1,3 +1,5 @@
+import time
+import os
 import hashlib
 
 from flask_login import UserMixin
@@ -107,3 +109,18 @@ class User (db.Model, UserMixin):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
+
+
+class File (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(150))
+    server_filename = db.Column(db.String(50))
+
+    def __init__(self, filename):
+        self.filename = filename
+        self.server_filename = File.hash(self.id, self.filename) + os.path.splitext(self.filename)[-1]
+
+    @staticmethod
+    def hash(id, filename):
+        s = f'{id},{filename},{time.time()}'
+        return hashlib.sha256(s.encode('utf-8')).hexdigest()
