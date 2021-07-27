@@ -11,7 +11,7 @@
         <h2>Краткая информация</h2>
         <p>Дата начала проекта: {{ project.started_date }}</p>
         {% if project.github %}
-        <p>Исходный код проекта доступен на <a href="{{ project.github }}">github</a></p>
+        <p>Исходный код проекта доступен на <a href="{{ project.github }}" target="_blank">github</a></p>
         {% endif %}
         {% if latest %}
         <p>Последняя версия: {{ latest.version }} ({{ latest.released_date }})</p>
