@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Проекты {% endblock %}
+
+
+{% block main %}
+
+    <h1>Мои проекты</h1>
+
+    <div class="content">
+    {% if not projects %}
+        <p>Список проектов пуст</p>
+    {% endif %}
+    {% for p in projects %}
+
+        <div class="block">
+            <h3>{{ p.name }}</h3>
+            <p>{{ p.description|truncate(50) }}</p>
+            <a href="{{ url_for('projects.project', id=p.id) }}" class="more">Подробнее</a>
+        </div>
+
+    {% endfor %}
+    </div>
+
+{% endblock %}
