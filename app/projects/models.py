@@ -20,7 +20,7 @@ class Release (db.Model):
 
     @property
     def released_date(self):
-        return self.started.strftime("%d.%m.%Y %H:%M")
+        return self.date.strftime("%d.%m.%Y %H:%M")
 
 
 class Project (db.Model):
