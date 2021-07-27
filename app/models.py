@@ -114,13 +114,15 @@ class User (db.Model, UserMixin):
 class File (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(150))
+    description = db.Column(db.Text)
     server_filename = db.Column(db.String(50))
 
-    def __init__(self, filename):
+    def __init__(self, filename, description=""):
         self.filename = filename
+        self.description = description
         self.server_filename = File.hash(self.id, self.filename) + os.path.splitext(self.filename)[-1]
 
     @staticmethod
     def hash(id, filename):
-        s = f'{id},{filename},{time.time()}'
+        s = f'{id};{filename};{time.time()}'
         return hashlib.sha256(s.encode('utf-8')).hexdigest()

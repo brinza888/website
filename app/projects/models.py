@@ -16,10 +16,11 @@ class Release (db.Model):
         self.file = file
 
 
-class Project(db.Model):
+class Project (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     description = db.Column(db.Text)
+    github = db.Column(db.String(1000), nullable=True)
 
     releases = db.relationship(Release, lazy='dynamic', backref='project')
 
