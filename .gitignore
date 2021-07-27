@@ -1,5 +1,8 @@
-/myenv/
+venv
 run.bat
 __pycache__
 *.db
 .env
+.idea
+logs
+*.sock

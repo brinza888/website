@@ -1,8 +1,13 @@
-flask
+flask~=1.1.2
 flask-login
 flask-sqlalchemy
 flask-migrate
 flask-script
+flask-admin
+Flask-WTF
 mysql-connector-python
 gunicorn
-python-dotenv
+python-dotenv~=0.15.0
+click~=7.1.2
+SQLAlchemy~=1.3.23
+alembic~=1.5.7

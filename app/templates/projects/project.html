@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Проект {% endblock %}
+
+
+{% block main %}
+
+    <h1>Проект &#171;{{ project.name }}&#187;</h1>
+
+    <div class="content">
+        <h2>Краткая информация</h2>
+        <p>Дата начала проекта: {{ project.started_date }}</p>
+        {% if project.github %}
+        <p>Исходный код проекта доступен на <a href="{{ project.github }}">github</a></p>
+        {% endif %}
+        {% if latest %}
+        <p>Последняя версия: {{ latest.version }} ({{ latest.released_date }})</p>
+        {% endif %}
+
+        <h2>Описание</h2>
+        <p>{{ project.description }}</p>
+
+        {% if latest %}
+        <h2>Релизы</h2>
+        <table class="bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Версия</th>
+                    <th>Описание</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for release in project.releases|sort(attribute='date', reverse=True) %}
+                <tr>
+                    <td>{{ release.id }}</td>
+                    <td>{{ release.version }}</td>
+                    <td>{{ release.description }}</td>
+                    <td>{{ release.released_date }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+{% endblock %}

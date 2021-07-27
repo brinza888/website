@@ -6,11 +6,11 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 
 class Config:
-    DEBUG = bool(os.environ.get("DEBUG", False))
-    DEBUG_HOST = os.environ.get("DEBUG_HOST", "localhost")
-    DEBUG_PORT = int(os.environ.get("DEBUG_PORT", 5000))
+    DEBUG = bool(int(os.environ.get("DEBUG", False)))
 
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///" + os.path.join(basedir, "app.db"))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    AUTO_PERMISSIONS = bool(int(os.environ.get("AUTO_PERMISSIONS", False)))
 
     SECRET_KEY = os.environ.get("SECRET_KEY", "too-much-secret-4u")

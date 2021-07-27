@@ -21,11 +21,6 @@ def eula():
     return render_template("main/eula.html")
 
 
-@bp.route("/projects")
-def projects():
-    return render_template("main/projects.html")
-
-
 @bp.route("/news")
 def news():
     return render_template("main/news.html")

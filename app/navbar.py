@@ -8,8 +8,9 @@ class NavElement:
 
 
 class Navbar:
-    def __init__(self, elements=tuple()):
+    def __init__(self, elements=None):
         self.elements = []
+        elements = [] or elements
         for el in elements:
             self.add_element(*el)
     
@@ -23,7 +24,7 @@ class Navbar:
 
 navbar = Navbar([
         ('main.index', 'Главная'),
-        ('main.projects', 'Мои проекты'),
+        ('projects.index', 'Мои проекты'),
         ('main.news', 'Новости'),
         ('main.contacts', 'Контакты'),
 ])

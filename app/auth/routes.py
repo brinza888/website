@@ -8,6 +8,8 @@ from app import db
 
 @bp.route("/login", methods=["POST", "GET"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.profile"))
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -26,6 +28,8 @@ def login():
 
 @bp.route("/register", methods=["POST", "GET"])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.profile"))
     if request.method == "POST":
         profile_name = request.form.get("profile_name")
         username = request.form.get("username")

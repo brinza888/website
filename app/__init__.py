@@ -1,28 +1,43 @@
 from flask import Flask
+
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_login import LoginManager
+from flask_admin import Admin
 
 from config import Config
+
+from app.permissions import PermsManager
 
 
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+pm = PermsManager()
+admin = Admin(name="BrinzaBezrukoff", template_mode="bootstrap3")
 
 
-def create_app():
+def create_app(config=Config):
     app = Flask(__name__,
-            static_url_path="/static",
-            static_folder="./static")
-    app.config.from_object(Config)
+                static_url_path="/static",
+                static_folder="./static")
+    app.config.from_object(config)
 
-    ## Modules ##
+    from app.admin_views import ProtectedAdminIndex, ProtectedAdminModel
+
+    # Modules
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    admin.init_app(app, index_view=ProtectedAdminIndex())
 
-    ## Blueprints ##
+    # Admin views
+    from app.models import User, Role, Permission
+    admin.add_view(ProtectedAdminModel(User, db.session))
+    admin.add_view(ProtectedAdminModel(Role, db.session))
+    admin.add_view(ProtectedAdminModel(Permission, db.session))
+
+    # Blueprints
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
@@ -32,12 +47,26 @@ def create_app():
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    ## Context processors ##
+    from app.projects import bp as projects_bp
+    app.register_blueprint(projects_bp, url_prefix="/projects")
+
+    # Context processors
     from app.tools import utility_processor, navbar_processor
     app.context_processor(utility_processor)
     app.context_processor(navbar_processor)
+
+    # Commands
+    from app.commands import create_perms
+    app.cli.add_command(create_perms)
+
+    # Permissions
+    pm.init_app(app, db, Permission)
+
+    if app.config["AUTO_PERMISSIONS"]:
+        pm.create_all()
 
     return app
 
 
 from app import models
+from app.projects import models
