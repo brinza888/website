@@ -25,7 +25,6 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Версия</th>
                     <th>Описание</th>
                     <th>Дата</th>
@@ -37,7 +36,6 @@
             <tbody>
             {% for release in project.releases|sort(attribute='date', reverse=True) %}
                 <tr>
-                    <td>{{ release.id }}</td>
                     <td>{{ release.version }}</td>
                     <td>{{ release.description }}</td>
                     <td>{{ release.date.strftime('%d.%m.%Y') }}</td>
