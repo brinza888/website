@@ -14,3 +14,4 @@ class Config:
     AUTO_PERMISSIONS = bool(int(os.environ.get("AUTO_PERMISSIONS", False)))
 
     SECRET_KEY = os.environ.get("SECRET_KEY", "too-much-secret-4u")
+    FILES_FOLDER = os.environ.get("FILES_FOLDER", os.path.join(basedir, "files"))

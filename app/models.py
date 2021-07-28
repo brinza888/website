@@ -115,14 +115,19 @@ class File (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(150))
     description = db.Column(db.Text)
-    server_filename = db.Column(db.String(50))
+    server_filename = db.Column(db.String(80), nullable=False, unique=True)
+    # sha256 string has 64 symbols + 16 symbols for extension
 
     def __init__(self, filename, description=""):
         self.filename = filename
         self.description = description
-        self.server_filename = File.hash(self.id, self.filename) + os.path.splitext(self.filename)[-1]
+        ext = os.path.splitext(self.filename)[-1][:16]  # fit file extension in 16 symbols
+        self.server_filename = File.hash(self.id, self.filename) + ext
 
     @staticmethod
     def hash(id, filename):
         s = f'{id};{filename};{time.time()}'
         return hashlib.sha256(s.encode('utf-8')).hexdigest()
+
+    def __repr__(self):
+        return f"File({self.id}, {self.filename}, {self.server_filename})"

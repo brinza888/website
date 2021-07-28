@@ -2,7 +2,7 @@ from flask import *
 from flask_login import current_user, login_required
 
 from app.main import bp
-from app.models import User
+from app.models import User, File
 
 
 @bp.route("/")
@@ -40,3 +40,12 @@ def profile_other(username):
     if not u:
         abort(404)
     return render_template("main/profile.html", user=u)
+
+
+@bp.route("/download/<filename>")
+def download_file(filename):
+    f = File.query.filter(File.server_filename == filename).first()
+    return send_from_directory(current_app.config["FILES_FOLDER"],
+                               filename,
+                               as_attachment=True,
+                               attachment_filename=f.filename)

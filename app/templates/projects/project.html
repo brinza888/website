@@ -9,12 +9,12 @@
 
     <div class="content">
         <h2>Краткая информация</h2>
-        <p>Дата начала проекта: {{ project.started_date }}</p>
+        <p>Дата начала проекта: {{ project.started.strftime('%d.%m.%Y') }}</p>
         {% if project.github %}
         <p>Исходный код проекта доступен на <a href="{{ project.github }}" target="_blank">github</a></p>
         {% endif %}
         {% if latest %}
-        <p>Последняя версия: {{ latest.version }} ({{ latest.released_date }})</p>
+        <p>Последняя версия: {{ latest.version }} ({{ latest.date.strftime('%d.%m.%Y') }})</p>
         {% endif %}
 
         <h2>Описание</h2>
@@ -37,7 +37,7 @@
                     <td>{{ release.id }}</td>
                     <td>{{ release.version }}</td>
                     <td>{{ release.description }}</td>
-                    <td>{{ release.released_date }}</td>
+                    <td>{{ release.date.strftime('%d.%m.%Y') }}</td>
                 </tr>
             {% endfor %}
             </tbody>
