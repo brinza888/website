@@ -29,6 +29,9 @@
                     <th>Версия</th>
                     <th>Описание</th>
                     <th>Дата</th>
+                    {% if project.downloadable %}
+                    <th>Скачать</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +41,13 @@
                     <td>{{ release.version }}</td>
                     <td>{{ release.description }}</td>
                     <td>{{ release.date.strftime('%d.%m.%Y') }}</td>
+                    {% if project.downloadable %}
+                    {% if release.file %}
+                    <td><a href="{{ url_for('main.download_file', filename=release.file.server_filename) }}">Скачать</a></td>
+                    {% else %}
+                    <td><b>Релиз нельзя скачать</b></td>
+                    {% endif %}
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
