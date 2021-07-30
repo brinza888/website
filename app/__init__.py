@@ -56,8 +56,10 @@ def create_app(config=Config):
     app.context_processor(navbar_processor)
 
     # Commands
-    from app.commands import create_perms
-    app.cli.add_command(create_perms)
+    from app.commands import roles_cli, perms_cli, users_cli
+    app.cli.add_command(roles_cli)
+    app.cli.add_command(perms_cli)
+    app.cli.add_command(users_cli)
 
     # Permissions
     pm.init_app(app, db, Permission)
