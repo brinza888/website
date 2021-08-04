@@ -4,7 +4,8 @@
 
 
 {% block main %}
-    <h1> Регистрация </h1>
+    <!--    Temporarily removed registration !-->
+    <h1> Регистрация на сайте временно недоступна! </h1>
     <br>
 
     {% if error %}
@@ -21,35 +22,35 @@
         </div>
     {% endif %}
 
-    <form action="{{url_for('auth.register')}}" method="POST">
-        <div class="row">
-            <label>Имя пользователя</label>
-            <input type="text" name="username" required>
-        </div>
+<!--    <form action="{{url_for('auth.register')}}" method="POST">-->
+<!--        <div class="row">-->
+<!--            <label>Имя пользователя</label>-->
+<!--            <input type="text" name="username" required>-->
+<!--        </div>-->
 
-        <div class="row">
-            <label>Ваше имя (отображается в профиле)</label>
-            <input type="text" name="profile_name" required>
-        </div>
+<!--        <div class="row">-->
+<!--            <label>Ваше имя (отображается в профиле)</label>-->
+<!--            <input type="text" name="profile_name" required>-->
+<!--        </div>-->
 
-        <div class="row">
-            <label>Пароль</label>
-            <input type="password" name="password" required>
-        </div>
+<!--        <div class="row">-->
+<!--            <label>Пароль</label>-->
+<!--            <input type="password" name="password" required>-->
+<!--        </div>-->
 
-        <div class="row">
-            <label>Повтор пароля</label>
-            <input type="password" name="password2" required>
-        </div>
+<!--        <div class="row">-->
+<!--            <label>Повтор пароля</label>-->
+<!--            <input type="password" name="password2" required>-->
+<!--        </div>-->
 
-        <div class="row">   
-            <label>
-                <input type="checkbox" name="eula_accept" required> Я принимаю <a href="{{url_for('main.eula')}}" target="_blank">Пользовательское соглашение</a>
-            </label>
-        </div>
+<!--        <div class="row">   -->
+<!--            <label>-->
+<!--                <input type="checkbox" name="eula_accept" required> Я принимаю <a href="{{url_for('main.eula')}}" target="_blank">Пользовательское соглашение</a>-->
+<!--            </label>-->
+<!--        </div>-->
 
-        <div class="row">
-            <button type="submit">Войти</button>
-        </div>
-    </form>
+<!--        <div class="row">-->
+<!--            <button type="submit">Войти</button>-->
+<!--        </div>-->
+<!--    </form>-->
 {% endblock %}
