@@ -25,6 +25,6 @@ class Navbar:
 navbar = Navbar([
         ('main.index', 'Главная'),
         ('projects.index', 'Мои проекты'),
-        ('main.news', 'Новости'),
+        # ('main.news', 'Новости'),
         ('main.contacts', 'Контакты'),
 ])

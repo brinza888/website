@@ -18,9 +18,8 @@ class Release (db.Model):
         self.description = description
         self.file = file
 
-    @property
-    def released_date(self):
-        return self.date.strftime("%d.%m.%Y")
+    def __repr__(self):
+        return f'Release({self.id}, project_id={self.project_id}, {self.version})'
 
 
 class Project (db.Model):
@@ -29,6 +28,7 @@ class Project (db.Model):
     description = db.Column(db.Text)
     github = db.Column(db.String(1000), nullable=True)
     started = db.Column(db.DateTime, default=datetime.now())
+    downloadable = db.Column(db.Boolean, default=False)
 
     releases = db.relationship(Release, lazy='dynamic', backref='project')
 
@@ -36,6 +36,5 @@ class Project (db.Model):
         self.name = name
         self.description = description
 
-    @property
-    def started_date(self):
-        return self.started.strftime("%d.%m.%Y")
+    def __repr__(self):
+        return f'Project({self.id}, {self.name})'

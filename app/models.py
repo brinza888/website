@@ -21,25 +21,23 @@ class Role(db.Model):
     permissions = db.relationship("Permission", secondary=permissions_roles, lazy="dynamic",
                                   backref=db.backref("roles", lazy="dynamic"))
 
-    def __repr__(self):
-        return f"Role({self.name})"
-
-    def __str__(self):
-        return f"{self.name}"
-
-    def has_permission(self, permission_name):
-        return permission_name in [p.name for p in self.permissions.all()]
-
-    @classmethod
-    def new(cls, name, display_name, perms=tuple()):
-        r = Role(name=name, display_name=display_name)
+    def __init__(self, name, display_name, perms=tuple()):
+        self.name = name
+        self.display_name = display_name
         for p_name in perms:
             p = Permission.query.filter(Permission.name == p_name).first()
             if not p:
                 continue
-            r.permissions.append(p)
-        db.session.add(r)
-        return r
+            self.permissions.append(p)
+
+    def __repr__(self):
+        return f"Role({self.name}, {self.display_name})"
+
+    def __str__(self):
+        return f"{self.name} ({self.display_name})"
+
+    def has_permission(self, permission_name):
+        return permission_name in [p.name for p in self.permissions.all()]
 
 
 class Permission(db.Model):
@@ -51,7 +49,7 @@ class Permission(db.Model):
         return f"Permission({self.name})"
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} ({self.description})"
 
 
 roles_users = db.Table("roles_users",
@@ -73,7 +71,7 @@ class User (db.Model, UserMixin):
         return f"User({self.username})"
 
     def __str__(self):
-        return f"{self.username}"
+        return f"{self.username}#{self.id} ({self.profile_name})"
 
     def has_permission(self, permission_name):
         for r in self.roles.all():
@@ -115,14 +113,19 @@ class File (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(150))
     description = db.Column(db.Text)
-    server_filename = db.Column(db.String(50))
+    server_filename = db.Column(db.String(80), nullable=False, unique=True)
+    # sha256 string has 64 symbols + 16 symbols for extension
 
     def __init__(self, filename, description=""):
         self.filename = filename
         self.description = description
-        self.server_filename = File.hash(self.id, self.filename) + os.path.splitext(self.filename)[-1]
+        ext = os.path.splitext(self.filename)[-1][:16]  # fit file extension in 16 symbols
+        self.server_filename = File.hash(self.id, self.filename) + ext
 
     @staticmethod
     def hash(id, filename):
         s = f'{id};{filename};{time.time()}'
         return hashlib.sha256(s.encode('utf-8')).hexdigest()
+
+    def __repr__(self):
+        return f"File({self.id}, {self.filename}, {self.server_filename})"

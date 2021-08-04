@@ -31,6 +31,7 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for("main.profile"))
     if request.method == "POST":
+        abort(403)  # Temporarily removed registration !
         profile_name = request.form.get("profile_name")
         username = request.form.get("username")
         password = request.form.get("password")

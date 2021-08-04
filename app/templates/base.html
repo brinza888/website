@@ -42,7 +42,7 @@
                                         <li><a href="{{url_for('auth.logout')}}">Выйти из аккаунта</a></li>
                                     {% else %}
                                         <li><a href="{{url_for('auth.login')}}">Вход</a></li>
-                                        <li><a href="{{url_for('auth.register')}}">Регистрация</a></li>
+                                        <!--<li><a href="{{url_for('auth.register')}}">Регистрация</a></li>-->
                                     {% endif %}
                                 {% endblock %}
         					</ul>
@@ -59,8 +59,8 @@
 
 			<div class="footer">
                 {% block footer %}
-				    <p>&copy; Copyright {{get_year()}} <a href="/brinzabezrukoff">Brinza Bezrukoff</a></p>
-                    <p><a href="{{url_for('main.eula')}}" target="_blank">Пользовательское соглашение (EULA)<a></p>
+				    <p>&copy; Copyright {{get_year()}} <a href="https://vk.com/brinza888" target="_blank">Brinza Bezrukoff</a></p>
+                    <p><a href="{{url_for('main.eula')}}" target="_blank">Пользовательское соглашение (EULA)</a></p>
                 {% endblock %}
 			</div>
 

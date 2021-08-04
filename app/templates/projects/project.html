@@ -9,12 +9,12 @@
 
     <div class="content">
         <h2>Краткая информация</h2>
-        <p>Дата начала проекта: {{ project.started_date }}</p>
+        <p>Дата начала проекта: {{ project.started.strftime('%d.%m.%Y') }}</p>
         {% if project.github %}
-        <p>Исходный код проекта доступен на <a href="{{ project.github }}">github</a></p>
+        <p>Исходный код проекта доступен на <a href="{{ project.github }}" target="_blank">github</a></p>
         {% endif %}
         {% if latest %}
-        <p>Последняя версия: {{ latest.version }} ({{ latest.released_date }})</p>
+        <p>Последняя версия: {{ latest.version }} ({{ latest.date.strftime('%d.%m.%Y') }})</p>
         {% endif %}
 
         <h2>Описание</h2>
@@ -25,19 +25,27 @@
         <table class="bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Версия</th>
                     <th>Описание</th>
                     <th>Дата</th>
+                    {% if project.downloadable %}
+                    <th>Скачать</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
             {% for release in project.releases|sort(attribute='date', reverse=True) %}
                 <tr>
-                    <td>{{ release.id }}</td>
                     <td>{{ release.version }}</td>
                     <td>{{ release.description }}</td>
-                    <td>{{ release.released_date }}</td>
+                    <td>{{ release.date.strftime('%d.%m.%Y') }}</td>
+                    {% if project.downloadable %}
+                    {% if release.file %}
+                    <td><a href="{{ url_for('main.download_file', filename=release.file.server_filename) }}">Скачать</a></td>
+                    {% else %}
+                    <td><b>Релиз нельзя скачать</b></td>
+                    {% endif %}
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
