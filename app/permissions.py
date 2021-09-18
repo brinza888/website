@@ -1,7 +1,5 @@
 from functools import wraps, reduce
-from typing import *
 from enum import Flag
-from abc import ABCMeta
 
 from flask import redirect, url_for, abort
 from flask_login import current_user
@@ -118,6 +116,13 @@ class Permission (db.Model):
         return f"{self.role.name} on {self.protector} : {self.mode}"
 
 
+def has_permission(user: User, protector: Protector, mode: Mode) -> bool:
+    all_perms = protector.permissions.filter(Permission.role_id.in_([r.id for r in user.roles])).\
+        filter(Permission.protector_id == protector.id).all()  # all perms for current protector and user
+    total_mode = reduce(lambda x, y: x | y, [p.mode for p in all_perms])
+    return mode & total_mode == mode
+
+
 class ProtectedMixin:
 
     @declared_attr
@@ -129,12 +134,8 @@ class ProtectedMixin:
         return db.relationship(Protector, uselist=False,
                                backref=db.backref("protected_objects", lazy="dynamic"))
 
-
-def has_permission(user: User, protector: Protector, mode: Mode) -> bool:
-    all_perms = protector.permissions.filter(Permission.role_id.in_([r.id for r in user.roles])).\
-        filter(Permission.protector_id == protector.id).all()  # all perms for current protector and user
-    total_mode = reduce(lambda x, y: x | y, [p.mode for p in all_perms])
-    return mode & total_mode == mode
+    def has_permission(self, user: User, mode: Mode):
+        return has_permission(user, self.protector, mode)
 
 
 def permission_required(protector: Protector, mode: Mode):
