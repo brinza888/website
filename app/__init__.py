@@ -50,6 +50,9 @@ def create_app(config=Config):
     from app.projects import bp as projects_bp
     app.register_blueprint(projects_bp, url_prefix="/projects")
 
+    from app.forum import bp as forum_bp
+    app.register_blueprint(forum_bp, url_prefix="/forum")
+
     # Context processors
     from app.tools import utility_processor, navbar_processor, get_shell_context_processor
     app.context_processor(utility_processor)
