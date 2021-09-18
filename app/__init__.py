@@ -7,13 +7,10 @@ from flask_admin import Admin
 
 from config import Config
 
-from app.permissions import PermsManager
-
 
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
-pm = PermsManager()
 admin = Admin(name="BrinzaBezrukoff", template_mode="bootstrap3")
 
 
@@ -32,10 +29,10 @@ def create_app(config=Config):
     admin.init_app(app, index_view=ProtectedAdminIndex())
 
     # Admin views
-    from app.models import User, Role, Permission
+    from app.models import User
+    from app.permissions import Role
     admin.add_view(ProtectedAdminModel(User, db.session))
     admin.add_view(ProtectedAdminModel(Role, db.session))
-    admin.add_view(ProtectedAdminModel(Permission, db.session))
 
     # Blueprints
     from app.errors import bp as errors_bp
@@ -56,19 +53,12 @@ def create_app(config=Config):
     app.context_processor(navbar_processor)
 
     # Commands
-    from app.commands import roles_cli, perms_cli, users_cli
+    from app.commands import roles_cli, users_cli
     app.cli.add_command(roles_cli)
-    app.cli.add_command(perms_cli)
     app.cli.add_command(users_cli)
-
-    # Permissions
-    pm.init_app(app, db, Permission)
-
-    if app.config["AUTO_PERMISSIONS"]:
-        pm.create_all()
 
     return app
 
 
-from app import models
+from app import models, permissions
 from app.projects import models

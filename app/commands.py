@@ -4,24 +4,9 @@ import random
 import click
 from flask.cli import AppGroup
 
-from app import pm, db
-from app.models import Permission, Role, User
-
-
-perms_cli = AppGroup('perms', help='Manipulations with permissions')
-
-
-@perms_cli.command('create', help='Create all registered permissions in database')
-def perms_create():
-    """Create in DB all staged permissions"""
-    pm.create_all()
-
-
-@perms_cli.command('list', help='Shows list of all permissions')
-def perms_list():
-    perms = Permission.query.all()
-    for p in perms:
-        click.echo(str(p))
+from app import db
+from app.models import User
+from app.permissions import Role
 
 
 roles_cli = AppGroup('roles', help='Manipulations with roles')
@@ -39,39 +24,39 @@ def roles_create(name, display_name):
     db.session.commit()
 
 
-@roles_cli.command('grant', help='Grant to passed role passed list of permissions')
-@click.argument('role')
-@click.argument('perms', nargs=-1)
-def roles_grant(role, perms):
-    r = Role.query.filter(Role.name == role).first()
-    if not r:
-        click.echo('Role not found', err=True)
-        return
-    for p_name in perms:
-        p = Permission.query.filter(Permission.name == p_name).first()
-        if not p:
-            click.echo(f'Permission {p_name} not found', err=True)
-            continue
-        r.permissions.append(p)
-    db.session.commit()
-    click.echo('Successful granted')
-
-
-@roles_cli.command('revoke', help='Revoke permissions from role')
-@click.argument('role')
-@click.argument('perms', nargs=-1)
-def roles_revoke(role, perms):
-    r = Role.query.filter(Role.name == role).first()
-    if not r:
-        click.echo('Role not found', err=True)
-        return
-    for p_name in perms:
-        p = r.permissions.filter(Permission.name == p_name).first()
-        if not p:
-            click.echo(f'Permission {p_name} not in role {role}', err=True)
-            continue
-        r.permissions.remove(p)
-    db.session.commit()
+# @roles_cli.command('grant', help='Grant to passed role passed list of permissions')
+# @click.argument('role')
+# @click.argument('perms', nargs=-1)
+# def roles_grant(role, perms):
+#     r = Role.query.filter(Role.name == role).first()
+#     if not r:
+#         click.echo('Role not found', err=True)
+#         return
+#     for p_name in perms:
+#         p = Permission.query.filter(Permission.name == p_name).first()
+#         if not p:
+#             click.echo(f'Permission {p_name} not found', err=True)
+#             continue
+#         r.permissions.append(p)
+#     db.session.commit()
+#     click.echo('Successful granted')
+#
+#
+# @roles_cli.command('revoke', help='Revoke permissions from role')
+# @click.argument('role')
+# @click.argument('perms', nargs=-1)
+# def roles_revoke(role, perms):
+#     r = Role.query.filter(Role.name == role).first()
+#     if not r:
+#         click.echo('Role not found', err=True)
+#         return
+#     for p_name in perms:
+#         p = r.permissions.filter(Permission.name == p_name).first()
+#         if not p:
+#             click.echo(f'Permission {p_name} not in role {role}', err=True)
+#             continue
+#         r.permissions.remove(p)
+#     db.session.commit()
 
 
 @roles_cli.command('list', help='Shows list of all roles')
