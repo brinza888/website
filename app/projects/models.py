@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from app import db
+from app.permissions import ProtectedMixin
 
 
 class Release (db.Model):
@@ -22,7 +23,7 @@ class Release (db.Model):
         return f'Release({self.id}, project_id={self.project_id}, {self.version})'
 
 
-class Project (db.Model):
+class Project (db.Model, ProtectedMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     description = db.Column(db.Text)
