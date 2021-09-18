@@ -16,6 +16,7 @@ permissions_roles = db.Table("permissions_roles",
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
+    priority = db.Column(db.Integer, default=0, nullable=False)
     display_name = db.Column(db.String(255))
 
     permissions = db.relationship("Permission", secondary=permissions_roles, lazy="dynamic",
