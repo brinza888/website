@@ -99,6 +99,10 @@ def users_roles(user):
         click.echo(str(r))
 
 
+def random_password(length):
+    return ''.join([random.choice(string.hexdigits) for _ in range(length)])
+
+
 @users_cli.command('create', help='Create new user')
 @click.argument('username')
 @click.argument('profile_name')
@@ -106,8 +110,24 @@ def users_roles(user):
 @click.option('-l', '--length', default=12, help='Random password length')
 def users_create(username, profile_name, password, length):
     if password is None:
-        password = ''.join([random.choice(string.hexdigits) for _ in range(length)])
+        password = random_password(length)
     u = User.new(username, profile_name, password)
     db.session.add(u)
     db.session.commit()
-    click.echo(f'Created user {u} with temporary password: {password}')
+    click.echo(f'Created user {u} with password: {password}')
+
+
+@users_cli.command('password', help='Reset password')
+@click.argument('username')
+@click.option('-p', '--password', default=None, help='Set not random password')
+@click.option('-l', '--length', default=12, help='Random password length')
+def users_password(username, password, length):
+    u = User.query.filter_by(username=username).first()
+    if not u:
+        click.echo('User not found', err=True)
+        return
+    if password is None:
+        password = random_password(length)
+    u.set_password(password)
+    db.session.commit()
+    click.echo(f'{u} password updated: {password}')
