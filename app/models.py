@@ -2,7 +2,7 @@ import time
 import os
 import hashlib
 
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 
 from app import db, login_manager
 
@@ -108,6 +108,16 @@ class User (db.Model, UserMixin):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
+
+
+class Anonymous (AnonymousUserMixin, User):
+    def __init__(self):
+        self.username = "anonymous"
+        self.profile_name = "anonymous"
+        self.password = ""
+
+
+login_manager.anonymous_user = Anonymous
 
 
 class File (db.Model):
