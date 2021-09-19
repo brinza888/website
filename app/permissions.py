@@ -81,6 +81,7 @@ class Protector (db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
+    public_mode = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return f"<Protector #{self.id} {self.name}>"
@@ -119,6 +120,8 @@ class Permission (db.Model):
 def has_permission(user: User, protector: Protector, mode: Mode) -> bool:
     if protector is None:  # if protector not set - anyone can view
         return mode & Perm.VIEW == mode
+    if not user.is_authenticated:
+        return protector.public_mode & mode.value == mode.value
     all_perms = protector.permissions.filter(Permission.role_id.in_([r.id for r in user.roles])).\
         filter(Permission.protector_id == protector.id).all()  # all perms for current protector and user
     total_mode = reduce(lambda x, y: x | y, [p.mode for p in all_perms], Mode(0))
