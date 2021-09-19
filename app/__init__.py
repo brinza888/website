@@ -48,11 +48,12 @@ def create_app(config=Config):
     app.register_blueprint(projects_bp, url_prefix="/projects")
 
     # Context processors
-    from app.tools import utility_processor, navbar_processor
-    from app.permissions import perms_context_processor
-    app.context_processor(utility_processor)
-    app.context_processor(navbar_processor)
-    app.context_processor(perms_context_processor)
+    from app.tools import tools_ctx_processor
+    from app.navbar import navbar_ctx_processor
+    from app.permissions import perms_ctx_processor
+    app.context_processor(tools_ctx_processor)
+    app.context_processor(navbar_ctx_processor)
+    app.context_processor(perms_ctx_processor)
 
     # Commands
     from app.commands import roles_cli, users_cli

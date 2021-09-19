@@ -156,7 +156,7 @@ def permission_required(protector: Protector, mode: Mode):
     return decorator
 
 
-def perms_context_processor():
+def perms_ctx_processor():
     return {
         "Perm": Perm,
         "has_permission": has_permission

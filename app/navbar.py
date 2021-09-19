@@ -19,7 +19,7 @@ class Navbar:
 
     def build(self):
         for el in self.elements:
-            yield (url_for(el.view), el.title, el.view == request.endpoint)
+            yield url_for(el.view), el.title, el.view == request.endpoint
 
 
 navbar = Navbar([
@@ -28,3 +28,7 @@ navbar = Navbar([
         # ('main.news', 'Новости'),
         ('main.contacts', 'Контакты'),
 ])
+
+
+def navbar_ctx_processor():
+    return dict(navbar=navbar.build())
