@@ -117,9 +117,11 @@ class Permission (db.Model):
 
 
 def has_permission(user: User, protector: Protector, mode: Mode) -> bool:
+    if protector is None:  # if protector not set - anyone can view
+        return mode & Perm.VIEW == mode
     all_perms = protector.permissions.filter(Permission.role_id.in_([r.id for r in user.roles])).\
         filter(Permission.protector_id == protector.id).all()  # all perms for current protector and user
-    total_mode = reduce(lambda x, y: x | y, [p.mode for p in all_perms])
+    total_mode = reduce(lambda x, y: x | y, [p.mode for p in all_perms], Mode(0))
     return mode & total_mode == mode
 
 
@@ -149,3 +151,10 @@ def permission_required(protector: Protector, mode: Mode):
             return func(*args, **kwargs)
         return wrapped
     return decorator
+
+
+def perms_context_processor():
+    return {
+        "Perm": Perm,
+        "has_permission": has_permission
+    }

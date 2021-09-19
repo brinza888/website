@@ -49,8 +49,10 @@ def create_app(config=Config):
 
     # Context processors
     from app.tools import utility_processor, navbar_processor
+    from app.permissions import perms_context_processor
     app.context_processor(utility_processor)
     app.context_processor(navbar_processor)
+    app.context_processor(perms_context_processor)
 
     # Commands
     from app.commands import roles_cli, users_cli
