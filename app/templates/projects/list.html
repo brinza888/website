@@ -11,7 +11,7 @@
     {% if not projects %}
         <p>Список проектов пуст</p>
     {% endif %}
-    {% for p in projects %}
+    {% for p in projects if p.has_permission(current_user, Perm.VIEW) %}
 
         <div class="block">
             <h3>{{ p.name }}</h3>
