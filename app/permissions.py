@@ -127,9 +127,10 @@ def has_permission(user: User, protector, mode: Mode) -> bool:
 
     if not user.is_authenticated:
         return protector.public_mode & mode.value == mode.value
+
     all_perms = protector.permissions.filter(Permission.role_id.in_([r.id for r in user.roles])).\
         filter(Permission.protector_id == protector.id).all()  # all perms for current protector and user
-    total_mode = reduce(lambda x, y: x | y, [p.mode for p in all_perms], Mode(0))
+    total_mode = reduce(lambda x, y: x | y, [p.mode for p in all_perms], Mode(0)) | Mode(protector.public_mode)
     return mode & total_mode == mode
 
 
@@ -152,10 +153,11 @@ def permission_required(protector, mode: Mode):
     def decorator(func):
         @wraps(func)
         def wrapped(*args, **kwargs):
-            if not current_user.is_authenticated:
-                return redirect(url_for("auth.login"))
             if not has_permission(current_user, protector, mode):
-                abort(403)
+                if current_user.is_authenticated:
+                    abort(403)
+                else:
+                    return redirect(url_for("auth.login"))
             return func(*args, **kwargs)
         return wrapped
     return decorator
