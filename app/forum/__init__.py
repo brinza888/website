@@ -4,4 +4,4 @@ from flask import Blueprint
 bp = Blueprint("forum", __name__)
 
 
-from app.forum import routes
+from app.forum import routes, models
