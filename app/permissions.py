@@ -117,9 +117,14 @@ class Permission (db.Model):
         return f"{self.role.name} on {self.protector} : {self.mode}"
 
 
-def has_permission(user: User, protector: Protector, mode: Mode) -> bool:
+def has_permission(user: User, protector, mode: Mode) -> bool:
     if protector is None:  # if protector not set - anyone can view
         return mode & Perm.VIEW == mode
+    if isinstance(protector, str):
+        protector = Protector.query.filter(Protector.name == protector).first()
+    if not isinstance(protector, Protector):
+        raise ValueError("parameter protector must be Protector or str")
+
     if not user.is_authenticated:
         return protector.public_mode & mode.value == mode.value
     all_perms = protector.permissions.filter(Permission.role_id.in_([r.id for r in user.roles])).\
@@ -143,7 +148,7 @@ class ProtectedMixin:
         return has_permission(user, self.protector, mode)
 
 
-def permission_required(protector: Protector, mode: Mode):
+def permission_required(protector, mode: Mode):
     def decorator(func):
         @wraps(func)
         def wrapped(*args, **kwargs):
