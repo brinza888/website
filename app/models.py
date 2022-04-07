@@ -37,9 +37,6 @@ class Role(db.Model):
     def __str__(self):
         return f"{self.name} ({self.display_name})"
 
-    def has_permission(self, permission_name):
-        return permission_name in [p.name for p in self.permissions.all()]
-
 
 class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -74,14 +71,8 @@ class User (db.Model, UserMixin):
     def __str__(self):
         return f"{self.username}#{self.id} ({self.profile_name})"
 
-    def has_permission(self, permission_name):
-        for r in self.roles.all():
-            if r.has_permission(permission_name):
-                return True
-        return False
-
     def has_role(self, role_name):
-        return role_name in [r.name for r in self.roles.all()]
+        return self.roles.query.filter(Role.name == role_name).count() != 0
 
     def set_role(self, role_name):
         r = Role.query.filter(Role.name == role_name).first()
