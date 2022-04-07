@@ -17,3 +17,9 @@ def utility_processor():
 
 def navbar_processor():
     return dict(navbar=navbar.build())
+
+
+def get_shell_context_processor(**kwargs):
+    def shell_context():
+        return dict(kwargs)
+    return shell_context

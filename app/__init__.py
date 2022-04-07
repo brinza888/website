@@ -51,9 +51,16 @@ def create_app(config=Config):
     app.register_blueprint(projects_bp, url_prefix="/projects")
 
     # Context processors
-    from app.tools import utility_processor, navbar_processor
+    from app.tools import utility_processor, navbar_processor, get_shell_context_processor
     app.context_processor(utility_processor)
     app.context_processor(navbar_processor)
+    app.shell_context_processor(get_shell_context_processor(
+        db=db,
+        lm=login_manager,
+        pm=pm,
+        models=models,
+        project_models=project_models
+    ))
 
     # Commands
     from app.commands import roles_cli, perms_cli, users_cli
@@ -71,4 +78,4 @@ def create_app(config=Config):
 
 
 from app import models
-from app.projects import models
+from app.projects import models as project_models
