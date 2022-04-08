@@ -3,7 +3,6 @@ import os
 import hashlib
 
 from flask_login import UserMixin, AnonymousUserMixin
-from sqlalchemy.orm.query import Query
 
 from app import db, login_manager
 

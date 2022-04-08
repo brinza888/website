@@ -20,7 +20,7 @@ def create_app(config=Config):
                 static_folder="./static")
     app.config.from_object(config)
 
-    from app.admin_views import ProtectedAdminIndex, ProtectedAdminModel
+    from app.admin_views import ProtectedAdminIndex, ProtectedAdminModel, UserAdminView
 
     # Modules
     db.init_app(app)
@@ -30,7 +30,7 @@ def create_app(config=Config):
 
     # Admin views
     from app.models import User, Role, Permission
-    admin.add_view(ProtectedAdminModel(User, db.session))
+    admin.add_view(UserAdminView(User, db.session))
     admin.add_view(ProtectedAdminModel(Role, db.session))
     admin.add_view(ProtectedAdminModel(Permission, db.session))
 

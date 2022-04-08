@@ -24,3 +24,9 @@ class ProtectedAdminModel (ModelView):
         if current_user.is_authenticated:
             abort(403)
         return redirect(url_for("auth.login"))
+
+
+class UserAdminView(ProtectedAdminModel):
+    column_exclude_list = ["password"]
+    form_excluded_columns = ["password"]
+
