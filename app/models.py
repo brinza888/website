@@ -3,6 +3,7 @@ import os
 import hashlib
 
 from flask_login import UserMixin, AnonymousUserMixin
+from sqlalchemy.orm.query import Query
 
 from app import db, login_manager
 
@@ -78,6 +79,20 @@ class User (db.Model, UserMixin):
         r = Role.query.filter(Role.name == role_name).first()
         if r:
             self.roles.append(r)
+
+    def has_permission(self, permission: str):
+        domains = permission.split(".")[:-1]
+        search_for = set()
+        for i in range(len(domains)):
+            for j in range(0, i + 1):
+                search_for.add(".".join(domains[i:j+1]) + ".*")
+        search_for.add(permission)
+        search_for.add("*")
+        user_perms = set()
+        for role in self.roles.all():
+            user_perms |= {p.name for p in role.permissions.all()}
+        print(search_for, user_perms)
+        return bool(user_perms & search_for)
 
     def set_password(self, password):
         self.password = User.hash_password(password)
