@@ -4,24 +4,8 @@ import random
 import click
 from flask.cli import AppGroup
 
-from app import pm, db
+from app import db
 from app.models import Permission, Role, User
-
-
-perms_cli = AppGroup('perms', help='Manipulations with permissions')
-
-
-@perms_cli.command('create', help='Create all registered permissions in database')
-def perms_create():
-    """Create in DB all staged permissions"""
-    pm.create_all()
-
-
-@perms_cli.command('list', help='Shows list of all permissions')
-def perms_list():
-    perms = Permission.query.all()
-    for p in perms:
-        click.echo(str(p))
 
 
 roles_cli = AppGroup('roles', help='Manipulations with roles')

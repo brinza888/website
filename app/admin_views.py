@@ -5,14 +5,6 @@ from flask_login import current_user
 from flask_admin import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 
-from app import pm
-
-
-pm.register({
-    "admin.index": ("Access to admin index page",),
-    "admin.access": ("Access to admin views",),
-})
-
 
 class ProtectedAdminIndex (AdminIndexView):
     def is_accessible(self):
