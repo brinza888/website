@@ -91,7 +91,6 @@ class User (db.Model, UserMixin):
         user_perms = set()
         for role in self.roles.all():
             user_perms |= {p.name for p in role.permissions.all()}
-        print(search_for, user_perms)
         return bool(user_perms & search_for)
 
     def set_password(self, password):
