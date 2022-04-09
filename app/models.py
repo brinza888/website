@@ -83,8 +83,7 @@ class User (db.Model, UserMixin):
         domains = permission.split(".")[:-1]
         search_for = set()
         for i in range(len(domains)):
-            for j in range(0, i + 1):
-                search_for.add(".".join(domains[i:j+1]) + ".*")
+            search_for.add(".".join(domains[0:i+1]) + ".*")
         search_for.add(permission)
         search_for.add("*")
         user_perms = set()
