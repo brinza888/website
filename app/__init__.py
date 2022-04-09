@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+
 from flask_admin import Admin
 
 from config import Config
@@ -20,19 +21,28 @@ def create_app(config=Config):
                 static_folder="./static")
     app.config.from_object(config)
 
-    from app.admin_views import ProtectedAdminIndex, ProtectedAdminModel, UserAdminView
+    from app import admin_views as av
 
     # Modules
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
-    admin.init_app(app, index_view=ProtectedAdminIndex())
+    admin.init_app(app, index_view=av.ProtectedAdminIndex())
 
     # Admin views
     from app.models import User, Role, Permission
-    admin.add_view(UserAdminView(User, db.session))
-    admin.add_view(ProtectedAdminModel(Role, db.session))
-    admin.add_view(ProtectedAdminModel(Permission, db.session))
+    from app.projects import admin_views as projects_av
+
+    # main admin views
+    admin.add_link(av.ProtectedMenuLink(name="Home Page", url="/", category="Links"))
+    admin.add_link(av.ProtectedMenuLink(name="Logout", url="/auth/logout", category="Links"))
+    admin.add_view(av.UserAdminView(User, db.session, category="Auth"))
+    admin.add_view(av.ProtectedModelView(Role, db.session, category="Auth"))
+    admin.add_view(av.ProtectedModelView(Permission, db.session, category="Auth"))
+    # projects admin views
+    admin.add_views(*projects_av)
+    # files admin view
+    admin.add_view(av.ProtectedFileAdmin(app.config["FILES_FOLDER"], "/file/", name="File storage"))
 
     # Blueprints
     from app.errors import bp as errors_bp
