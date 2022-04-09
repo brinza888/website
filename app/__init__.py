@@ -42,7 +42,12 @@ def create_app(config=Config):
     # projects admin views
     admin.add_views(*projects_av)
     # files admin view
-    admin.add_view(av.ProtectedFileAdmin(app.config["FILES_FOLDER"], "/file/", name="File storage"))
+    admin.add_view(av.ProtectedFileAdmin(
+        app.config["FILES_FOLDER"],
+        "/file/",
+        name="File storage",
+        endpoint="filestorage"
+    ))
 
     # Blueprints
     from app.errors import bp as errors_bp
