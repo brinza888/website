@@ -32,10 +32,10 @@ class Role(db.Model):
             self.permissions.append(p)
 
     def __repr__(self):
-        return f"Role({self.name}, {self.display_name})"
+        return f"Role(#{self.id}, {self.name})"
 
     def __str__(self):
-        return f"{self.name} ({self.display_name})"
+        return f"{self.name}"
 
 
 class Permission(db.Model):
@@ -44,10 +44,10 @@ class Permission(db.Model):
     description = db.Column(db.String(255))
 
     def __repr__(self):
-        return f"Permission({self.name})"
+        return f"Permission(#{self.id}, {self.name})"
 
     def __str__(self):
-        return f"{self.name} ({self.description})"
+        return f"{self.name}"
 
 
 roles_users = db.Table("roles_users",
