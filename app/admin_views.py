@@ -63,6 +63,9 @@ class ProtectedFileAdmin (FileAdmin):
     def is_accessible(self):
         return current_user.has_permission("admin.files.access")
 
+    def inaccessible_callback(self, name, **kwargs):
+        abort(404)
+
 
 class ProtectedMenuLink (MenuLink):
     def __init__(self, *args, permission="", **kwargs):
