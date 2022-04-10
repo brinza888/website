@@ -3,6 +3,12 @@
 {% block title %} Проект {% endblock %}
 
 
+{% block head %}
+    {{ super() }}
+    {{ ckeditor.load_code_theme() }}
+{% endblock %}
+
+
 {% block main %}
 
     <h1>Проект &#171;{{ project.name }}&#187;</h1>

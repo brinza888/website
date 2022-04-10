@@ -1,15 +1,15 @@
 from flask import Blueprint
 
-from app.admin_views import ProtectedModelView, CKEditorAdminView
-from app.projects.models import Project, Release
 from app import db
-
+from app.projects.models import Project, Release
+from app.admin_views import ProtectedModelView
+from app.projects.admin_views import ProjectAdminView
 
 bp = Blueprint('projects', __name__)
 
 
 admin_views = [
-    CKEditorAdminView(Project, db.session, category="Projects", ckeditor_fields=["description"]),
+    ProjectAdminView(Project, db.session, category="Projects"),
     ProtectedModelView(Release, db.session, category="Projects"),
 ]
 

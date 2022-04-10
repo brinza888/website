@@ -1,4 +1,4 @@
-from flask import redirect, url_for, abort
+from flask import abort
 
 from flask_login import current_user
 
@@ -6,8 +6,6 @@ from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.contrib.fileadmin import FileAdmin
 from flask_admin.menu import MenuLink
-
-from flask_ckeditor import CKEditorField
 
 from app.models import Role
 
@@ -78,15 +76,3 @@ class ProtectedMenuLink (MenuLink):
 
     def is_accessible(self):
         return current_user.has_permission(f"admin.{self.permission}.access")
-
-
-class CKEditorAdminView (ProtectedModelView):
-    edit_template = "myadmin/ckeditor/edit.html"
-    create_template = "myadmin/ckeditor/create.html"
-
-    def __init__(self, *args, ckeditor_fields, **kwargs):
-        new_fields = {field_name: CKEditorField for field_name in ckeditor_fields}
-        if self.form_overrides is None:
-            self.form_overrides = {}
-        self.form_overrides.update(new_fields)
-        super(CKEditorAdminView, self).__init__(*args, **kwargs)

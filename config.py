@@ -16,4 +16,6 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "too-much-secret-4u")
     FILES_FOLDER = os.environ.get("FILES_FOLDER", os.path.join(basedir, "files"))
 
-    CKEDITOR_PKG_TYPE = "full"
+    CKEDITOR_SERVE_LOCAL = True
+    CKEDITOR_ENABLE_CODESNIPPET = True
+    CKEDITOR_CODE_THEME = 'solarized_dark'
