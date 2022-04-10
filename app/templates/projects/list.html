@@ -15,7 +15,7 @@
 
         <div class="block">
             <h3>{{ p.name }}</h3>
-            <p>{{ p.description|truncate(50) }}</p>
+            <p>{{ p.description|truncate(50)|safe }}</p>
             <a href="{{ url_for('projects.project', id=p.id) }}" class="more">Подробнее</a>
         </div>
 

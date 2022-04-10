@@ -18,7 +18,7 @@
         {% endif %}
 
         <h2>Описание</h2>
-        <p>{{ project.description }}</p>
+        <p>{{ project.description|safe }}</p>
 
         {% if latest %}
         <h2>Релизы</h2>
@@ -37,7 +37,7 @@
             {% for release in project.releases|sort(attribute='date', reverse=True) %}
                 <tr>
                     <td>{{ release.version }}</td>
-                    <td>{{ release.description }}</td>
+                    <td>{{ release.description|safe }}</td>
                     <td>{{ release.date.strftime('%d.%m.%Y') }}</td>
                     {% if project.downloadable %}
                     {% if release.file %}
