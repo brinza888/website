@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 
 from flask_admin import Admin
+from flask_admin.menu import MenuLink
 
 from config import Config
 
@@ -34,8 +35,8 @@ def create_app(config=Config):
     from app.projects import admin_views as projects_av
 
     # main admin views
-    admin.add_link(av.ProtectedMenuLink(name="Home Page", url="/", category="Links"))
-    admin.add_link(av.ProtectedMenuLink(name="Logout", url="/auth/logout", category="Links"))
+    admin.add_link(MenuLink(name="Home Page", url="/", category="Links"))
+    admin.add_link(MenuLink(name="Logout", url="/auth/logout", category="Links"))
     admin.add_view(av.UserAdminView(User, db.session, category="Auth"))
     admin.add_view(av.ProtectedModelView(Role, db.session, category="Auth"))
     admin.add_view(av.ProtectedModelView(Permission, db.session, category="Auth"))

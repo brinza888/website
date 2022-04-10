@@ -39,6 +39,9 @@
                                 {% block rightNav %} 
                                     {% if current_user.is_authenticated %}
                                         <li><a href="{{url_for('main.profile')}}">Мой профиль</a></li>
+                                        {% if current_user.has_permission('admin.access') %}
+                                            <li><a href="{{url_for('admin.index')}}"><b>Админка</b></a></li>
+                                        {% endif %}
                                         <li><a href="{{url_for('auth.logout')}}">Выйти из аккаунта</a></li>
                                     {% else %}
                                         <li><a href="{{url_for('auth.login')}}">Вход</a></li>

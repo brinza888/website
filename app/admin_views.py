@@ -13,8 +13,8 @@ from app.models import Role
 class ProtectedAdminIndex (AdminIndexView):
     @expose("/")
     def index(self):
-        top_role = current_user.roles.order_by(Role.priority.desc()).first()
-        return self.render("myadmin/index.html", top_role=top_role)
+        roles = current_user.roles.order_by(Role.priority.desc())
+        return self.render("myadmin/index.html", roles=roles)
 
     def is_visible(self):  # hide Home tab
         return False

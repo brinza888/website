@@ -2,6 +2,13 @@
 
 {% block body %}
 
-    <h3> Welcome on admin panel, {{ top_role.display_name }} {{ current_user.profile_name }} !</h3>
+    <h1> Добро пожаловать в админку, <b>{{ current_user.profile_name }}</b> !</h1>
+
+    <h3> Ваши роли: </h3>
+    <ol>
+        {% for role in roles.all() %}
+            <li><b>{{ role.display_name }} ({{ role.priority }})</b></li>
+        {% endfor %}
+    </ol>
 
 {% endblock %}
