@@ -9,3 +9,4 @@ class ProjectAdminView (ProtectedModelView):
     form_overrides = {
         "description": CKEditorField
     }
+    column_exclude_list = ["description"]
