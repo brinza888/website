@@ -23,8 +23,10 @@
         <p>Последняя версия: {{ latest.version }} ({{ latest.date.strftime('%d.%m.%Y') }})</p>
         {% endif %}
 
-        <h2>Описание</h2>
-        <p>{{ project.description|safe }}</p>
+        <div class="content">
+            <h2>Описание</h2>
+            {{ project.description|safe }}
+        </div>
 
         {% if latest %}
         <h2>Релизы</h2>
