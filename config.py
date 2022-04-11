@@ -19,3 +19,4 @@ class Config:
     CKEDITOR_SERVE_LOCAL = True
     CKEDITOR_ENABLE_CODESNIPPET = True
     CKEDITOR_CODE_THEME = os.environ.get("CKEDITOR_CODE_THEME", "xcode")
+    CKEDITOR_HEIGHT = int(os.environ.get("CKEDITOR_HEIGHT", "800"))
