@@ -10,14 +10,16 @@
             <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename='images/favicon-32x32.png')}}">
             <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='images/favicon-16x16.png')}}">
 
-            <title>{% block title %}{% endblock %} | Brinza Bezrukoff</title>
+            <title>{% block title %}{% endblock %} | ilbz.ru</title>
         {% endblock %}
 	</head>
 	<body>
 		<div class="wrapper">
 
 			<div class="header">
-				<div class="logo"><a href="{{url_for('main.index')}}">Brinza<span class="black">Bezrukoff</span><span class="gray">.xyz</span></a></div>
+				<div class="logo"><a href="{{url_for('main.index')}}">
+                    IL<span class="black">BZ</span><span class="gray">.ru</span>
+                </a></div>
 				<ul class="nav">
                     {% block nav %}
                         {% for url, title, active in navbar %}
@@ -62,7 +64,7 @@
 
 			<div class="footer">
                 {% block footer %}
-				    <p>&copy; Copyright 2020-{{get_year()}}, <a href="https://vk.com/brinza888" target="_blank">Brinza Bezrukoff</a></p>
+				    <p>&copy; Copyright 2020-{{get_year()}}, <a href="https://vk.com/brinza888" target="_blank">Ilya Bezrukov</a></p>
                     <p><a href="{{url_for('main.eula')}}" target="_blank">Пользовательское соглашение (EULA)</a></p>
                 {% endblock %}
 			</div>
