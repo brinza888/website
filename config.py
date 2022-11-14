@@ -20,3 +20,20 @@ class Config:
     CKEDITOR_ENABLE_CODESNIPPET = True
     CKEDITOR_CODE_THEME = os.environ.get("CKEDITOR_CODE_THEME", "xcode")
     CKEDITOR_HEIGHT = int(os.environ.get("CKEDITOR_HEIGHT", "600"))
+
+    BLEACH_TAGS = [
+        "h1", "h2", "h3", "h4", "h5", "h6",
+        "a", "p", "li", "ol", "ul", "img",
+        "pre", "code", "i", "b", "s", "em", "strong",
+        "span", "div", "table", "tr", "td", "th",
+        "thead", "tbody", "caption", "blockquote",
+        "br", "hr", "sub", "sup"
+    ]
+    BLEACH_ATTRS = [
+        "style", "class", "border", "cellpadding", "cellspacing", "summary",
+        "href", "src", "alt", "title", "id", "name"
+    ]
+    BLEACH_STYLES = [
+        "color", "font-family", "font-weight", "width", "height", "text-align",
+        "font-size"
+    ]

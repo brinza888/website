@@ -12,4 +12,4 @@ python-dotenv
 click
 SQLAlchemy
 alembic
-bleach
+bleach==4.1.0
