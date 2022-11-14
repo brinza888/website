@@ -5,9 +5,11 @@ flask-migrate
 flask-script
 flask-admin
 Flask-WTF
+flask-ckeditor
 mysql-connector-python
 gunicorn
 python-dotenv
 click
 SQLAlchemy
 alembic
+bleach==4.1.0

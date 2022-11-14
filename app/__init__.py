@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_ckeditor import CKEditor
 
 from flask_admin import Admin
 from flask_admin.menu import MenuLink
@@ -14,6 +15,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 admin = Admin(name="BrinzaBezrukoff", template_mode="bootstrap3")
+ckeditor = CKEditor()
 
 
 def create_app(config=Config):
@@ -29,6 +31,7 @@ def create_app(config=Config):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     admin.init_app(app, index_view=av.ProtectedAdminIndex())
+    ckeditor.init_app(app)
 
     # Admin views
     from app.models import User, Role, Permission

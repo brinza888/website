@@ -3,6 +3,7 @@ from functools import wraps
 
 from flask import redirect, url_for, abort
 from flask_login import current_user
+import bleach
 
 from app.navbar import navbar
 
@@ -16,7 +17,11 @@ def get_datetime(f="%d.%m.%Y %H:%M"):
 
 
 def utility_processor():
-    return dict(get_year=get_year, get_datetime=get_datetime)
+    return dict(
+        get_year=get_year,
+        get_datetime=get_datetime,
+        clean=bleach.clean,
+    )
 
 
 def navbar_processor():

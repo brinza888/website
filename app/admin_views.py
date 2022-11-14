@@ -1,4 +1,4 @@
-from flask import redirect, url_for, abort
+from flask import abort
 
 from flask_login import current_user
 
@@ -76,4 +76,3 @@ class ProtectedMenuLink (MenuLink):
 
     def is_accessible(self):
         return current_user.has_permission(f"admin.{self.permission}.access")
-
