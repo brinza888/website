@@ -42,10 +42,19 @@ def profile_other(username):
     return render_template("main/profile.html", user=u)
 
 
-@bp.route("/download/<filename>")
+@bp.route("/file/<filename>/download")
 def download_file(filename):
     f = File.query.filter(File.server_filename == filename).first()
     return send_from_directory(current_app.config["FILES_FOLDER"],
                                filename,
                                as_attachment=True,
                                attachment_filename=f.filename)
+
+
+@bp.route("/file/<filename>")
+def get_file(filename):
+    f = File.query.filter(File.server_filename == filename).first()
+    return send_from_directory(current_app.config["FILES_FOLDER"],
+                               f.server_filename,
+                               as_attachment=False,
+                               download_name=f.filename)

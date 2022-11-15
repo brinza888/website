@@ -2,7 +2,7 @@ import time
 import os
 import hashlib
 
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 
 from app import db, login_manager
 
@@ -16,6 +16,7 @@ permissions_roles = db.Table("permissions_roles",
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
+    priority = db.Column(db.Integer, default=0, nullable=False)
     display_name = db.Column(db.String(255))
 
     permissions = db.relationship("Permission", secondary=permissions_roles, lazy="dynamic",
@@ -31,13 +32,10 @@ class Role(db.Model):
             self.permissions.append(p)
 
     def __repr__(self):
-        return f"Role({self.name}, {self.display_name})"
+        return f"Role(#{self.id}, {self.name})"
 
     def __str__(self):
-        return f"{self.name} ({self.display_name})"
-
-    def has_permission(self, permission_name):
-        return permission_name in [p.name for p in self.permissions.all()]
+        return f"{self.name}"
 
 
 class Permission(db.Model):
@@ -46,10 +44,10 @@ class Permission(db.Model):
     description = db.Column(db.String(255))
 
     def __repr__(self):
-        return f"Permission({self.name})"
+        return f"Permission(#{self.id}, {self.name})"
 
     def __str__(self):
-        return f"{self.name} ({self.description})"
+        return f"{self.name}"
 
 
 roles_users = db.Table("roles_users",
@@ -73,19 +71,25 @@ class User (db.Model, UserMixin):
     def __str__(self):
         return f"{self.username}#{self.id} ({self.profile_name})"
 
-    def has_permission(self, permission_name):
-        for r in self.roles.all():
-            if r.has_permission(permission_name):
-                return True
-        return False
-
     def has_role(self, role_name):
-        return role_name in [r.name for r in self.roles.all()]
+        return self.roles.query.filter(Role.name == role_name).count() != 0
 
     def set_role(self, role_name):
         r = Role.query.filter(Role.name == role_name).first()
         if r:
             self.roles.append(r)
+
+    def has_permission(self, permission: str):
+        domains = permission.split(".")[:-1]
+        search_for = set()
+        for i in range(len(domains)):
+            search_for.add(".".join(domains[0:i+1]) + ".*")
+        search_for.add(permission)
+        search_for.add("*")
+        user_perms = set()
+        for role in self.roles.all():
+            user_perms |= {p.name for p in role.permissions.all()}
+        return bool(user_perms & search_for)
 
     def set_password(self, password):
         self.password = User.hash_password(password)
@@ -107,6 +111,16 @@ class User (db.Model, UserMixin):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
+
+
+class Anonymous (AnonymousUserMixin, User):
+    def __init__(self):
+        self.username = "anonymous"
+        self.profile_name = "anonymous"
+        self.password = ""
+
+
+login_manager.anonymous_user = Anonymous
 
 
 class File (db.Model):
